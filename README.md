@@ -2,7 +2,7 @@
 
 **Student:** Isaro Muhirwa Ola
 **Student ID:** 26878
-**Course:** INSY 8322 Web Technology and Internet, Mid-Term Project
+**Course:** Web Technology and Internet, Mid-Term Project
 **Project:** Car Wash Booking and Management System
 
 REST API built with Spring Boot, Spring Data JPA and PostgreSQL for booking and managing car washes.
