@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import rw.auca.carwash.model.WashStatus;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import rw.auca.carwash.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,5 +108,9 @@ public class WashBookingService {
     @Transactional
     public int cancelDay(UUID washAttendantId, LocalDate date) {
         return washBookingRepository.cancelDay(washAttendantId, date, WashStatus.CANCELLED, WashStatus.WASHED);
+    }
+
+    public Page<WashBooking> getPage(Pageable pageable) {
+        return washBookingRepository.findAll(pageable);
     }
 }

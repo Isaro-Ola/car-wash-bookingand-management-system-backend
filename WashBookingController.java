@@ -5,6 +5,10 @@ import java.time.LocalDate;
 import rw.auca.carwash.model.WashStatus;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -102,5 +106,17 @@ public class WashBookingController {
         LocalDate day = LocalDate.parse(date);
         int count = washBookingService.cancelDay(washAttendantId, day);
         return new ResponseEntity<>(count + " wash bookings cancelled", HttpStatus.OK);
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<WashBooking>> getPage(@RequestParam int page, @RequestParam int size, @RequestParam String sort) {
+        String[] sortParts = sort.split(",");
+        String field = sortParts[0];
+        Sort.Direction direction = Sort.Direction.ASC;
+        if (sortParts.length > 1 && sortParts[1].equalsIgnoreCase("desc")) {
+            direction = Sort.Direction.DESC;
+        }
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, field));
+        return new ResponseEntity<>(washBookingService.getPage(pageable), HttpStatus.OK);
     }
 }
