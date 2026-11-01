@@ -61,8 +61,10 @@ public class WashBookingController {
         String message = washBookingService.delete(id);
         if (message.equals("Wash booking deleted successfully")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
-        } else {
+        } else if (message.equals("The wash booking with that id does not exist")) {
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(message, HttpStatus.CONFLICT);
         }
     }
 

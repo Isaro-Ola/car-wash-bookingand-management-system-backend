@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import rw.auca.carwash.model.WashStatus;
 import java.util.Optional;
 import java.util.UUID;
+import rw.auca.carwash.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rw.auca.carwash.model.WashBooking;
@@ -15,6 +16,9 @@ public class WashBookingService {
 
     @Autowired
     private WashBookingRepository washBookingRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     public String save(WashBooking washBooking) {
         if (washBooking.getBookingDate().isBefore(LocalDate.now())) {
@@ -54,8 +58,12 @@ public class WashBookingService {
     }
 
     public String delete(UUID id) {
-        if (!washBookingRepository.existsById(id)) {
+        Optional<WashBooking> existing = washBookingRepository.findById(id);
+        if (existing.isEmpty()) {
             return "The wash booking with that id does not exist";
+        }
+        if (paymentRepository.existsByWashBooking(existing.get())) {
+            return "That wash booking has payments, delete them first";
         }
         washBookingRepository.deleteById(id);
         return "Wash booking deleted successfully";
