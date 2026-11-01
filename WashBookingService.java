@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import rw.auca.carwash.model.WashStatus;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 import rw.auca.carwash.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,5 +97,14 @@ public class WashBookingService {
         found.setStatus(newStatus);
         washBookingRepository.save(found);
         return "Wash booking status updated successfully";
+    }
+
+    public List<Object[]> getStatusCounts() {
+        return washBookingRepository.findStatusCounts();
+    }
+
+    @Transactional
+    public int cancelDay(UUID washAttendantId, LocalDate date) {
+        return washBookingRepository.cancelDay(washAttendantId, date, WashStatus.CANCELLED, WashStatus.WASHED);
     }
 }

@@ -91,4 +91,16 @@ public class WashBookingController {
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/stats/by-status")
+    public ResponseEntity<List<Object[]>> getStatusCounts() {
+        return new ResponseEntity<>(washBookingService.getStatusCounts(), HttpStatus.OK);
+    }
+
+    @PatchMapping("/cancel-day")
+    public ResponseEntity<String> cancelDay(@RequestParam UUID washAttendantId, @RequestParam String date) {
+        LocalDate day = LocalDate.parse(date);
+        int count = washBookingService.cancelDay(washAttendantId, day);
+        return new ResponseEntity<>(count + " wash bookings cancelled", HttpStatus.OK);
+    }
 }
