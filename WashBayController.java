@@ -57,4 +57,9 @@ public class WashBayController {
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/free")
+    public ResponseEntity<List<WashBay>> getFree() {
+        return new ResponseEntity<>(washBayService.getFree(), HttpStatus.OK);
+    }
 }

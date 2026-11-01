@@ -46,4 +46,8 @@ public class WashBayService {
         washBayRepository.deleteById(id);
         return "Wash bay deleted successfully";
     }
+
+    public List<WashBay> getFree() {
+        return washBayRepository.findFreeWashBays();
+    }
 }

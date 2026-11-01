@@ -7,12 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rw.auca.carwash.model.Customer;
 import rw.auca.carwash.repository.CustomerRepository;
+import rw.auca.carwash.repository.WashAttendantRepository;
 
 @Service
 public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private WashAttendantRepository washAttendantRepository;
 
     public String save(Customer customer) {
         customerRepository.save(customer);
@@ -52,5 +56,13 @@ public class CustomerService {
 
     public List<Customer> getByLastName(String lastName) {
         return customerRepository.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
+    }
+
+    public boolean washAttendantExists(UUID washAttendantId) {
+        return washAttendantRepository.existsById(washAttendantId);
+    }
+
+    public List<Customer> getByWashAttendant(UUID washAttendantId) {
+        return customerRepository.findCustomersOfWashAttendant(washAttendantId);
     }
 }

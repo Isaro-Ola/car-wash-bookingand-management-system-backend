@@ -57,4 +57,9 @@ public class WashAttendantController {
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/by-service-type")
+    public ResponseEntity<List<WashAttendant>> getByServiceType(@RequestParam String name) {
+        return new ResponseEntity<>(washAttendantService.getByServiceTypeName(name), HttpStatus.OK);
+    }
 }

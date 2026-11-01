@@ -62,4 +62,13 @@ public class CustomerController {
     public ResponseEntity<List<Customer>> getByLastName(@RequestParam String lastName) {
         return new ResponseEntity<>(customerService.getByLastName(lastName), HttpStatus.OK);
     }
+
+    @GetMapping("/of-wash-attendant/{washAttendantId}")
+    public ResponseEntity<Object> getByWashAttendant(@PathVariable UUID washAttendantId) {
+        if (customerService.washAttendantExists(washAttendantId)) {
+            return new ResponseEntity<>(customerService.getByWashAttendant(washAttendantId), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("The wash attendant with that id does not exist", HttpStatus.NOT_FOUND);
+        }
+    }
 }

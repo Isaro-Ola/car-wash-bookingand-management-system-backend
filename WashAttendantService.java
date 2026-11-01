@@ -49,4 +49,8 @@ public class WashAttendantService {
         washAttendantRepository.deleteById(id);
         return "Wash attendant deleted successfully";
     }
+
+    public List<WashAttendant> getByServiceTypeName(String name) {
+        return washAttendantRepository.findWashAttendantsByServiceTypeName(name);
+    }
 }

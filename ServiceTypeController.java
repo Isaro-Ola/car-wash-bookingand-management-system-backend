@@ -57,4 +57,9 @@ public class ServiceTypeController {
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/unused")
+    public ResponseEntity<List<ServiceType>> getUnused() {
+        return new ResponseEntity<>(serviceTypeService.getUnused(), HttpStatus.OK);
+    }
 }
