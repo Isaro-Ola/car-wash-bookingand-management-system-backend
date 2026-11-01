@@ -14,6 +14,10 @@ import rw.auca.carwash.model.WashStatus;
 @Repository
 public interface WashBookingRepository extends JpaRepository<WashBooking, UUID> {
 
+    long countByBookingDate(LocalDate bookingDate);
+
+    long countByStatus(WashStatus status);
+
     List<WashBooking> findByStatusOrderByBookingDateAsc(WashStatus status);
 
     List<WashBooking> findByBookingDateBetweenOrderByBookingDateAsc(LocalDate start, LocalDate end);
