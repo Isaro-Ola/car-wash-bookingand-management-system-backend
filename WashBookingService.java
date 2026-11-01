@@ -1,6 +1,8 @@
 package rw.auca.carwash.service;
 
 import java.util.List;
+import java.time.LocalDate;
+import rw.auca.carwash.model.WashStatus;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +50,13 @@ public class WashBookingService {
         }
         washBookingRepository.deleteById(id);
         return "Wash booking deleted successfully";
+    }
+
+    public List<WashBooking> getByStatus(WashStatus status) {
+        return washBookingRepository.findByStatusOrderByBookingDateAsc(status);
+    }
+
+    public List<WashBooking> getBetween(LocalDate start, LocalDate end) {
+        return washBookingRepository.findByBookingDateBetweenOrderByBookingDateAsc(start, end);
     }
 }

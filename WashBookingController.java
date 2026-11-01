@@ -1,6 +1,8 @@
 package rw.auca.carwash.controller;
 
 import java.util.List;
+import java.time.LocalDate;
+import rw.auca.carwash.model.WashStatus;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +58,17 @@ public class WashBookingController {
         } else {
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/by-status")
+    public ResponseEntity<List<WashBooking>> getByStatus(@RequestParam WashStatus status) {
+        return new ResponseEntity<>(washBookingService.getByStatus(status), HttpStatus.OK);
+    }
+
+    @GetMapping("/between")
+    public ResponseEntity<List<WashBooking>> getBetween(@RequestParam String start, @RequestParam String end) {
+        LocalDate startDate = LocalDate.parse(start);
+        LocalDate endDate = LocalDate.parse(end);
+        return new ResponseEntity<>(washBookingService.getBetween(startDate, endDate), HttpStatus.OK);
     }
 }
