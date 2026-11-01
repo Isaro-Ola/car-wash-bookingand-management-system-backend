@@ -22,7 +22,13 @@ public class WashBookingController {
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody WashBooking washBooking) {
         String message = washBookingService.save(washBooking);
-        return new ResponseEntity<>(message, HttpStatus.CREATED);
+        if (message.equals("Wash booking saved successfully")) {
+            return new ResponseEntity<>(message, HttpStatus.CREATED);
+        } else if (message.equals("Wash booking date cannot be in the past")) {
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+        }
     }
 
     @GetMapping("/all")
@@ -70,5 +76,17 @@ public class WashBookingController {
         LocalDate startDate = LocalDate.parse(start);
         LocalDate endDate = LocalDate.parse(end);
         return new ResponseEntity<>(washBookingService.getBetween(startDate, endDate), HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<String> updateStatus(@PathVariable UUID id, @RequestParam WashStatus status) {
+        String message = washBookingService.updateStatus(id, status);
+        if (message.equals("Wash booking status updated successfully")) {
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (message.equals("The wash booking with that id does not exist")) {
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
     }
 }

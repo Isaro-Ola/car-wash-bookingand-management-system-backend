@@ -62,4 +62,28 @@ public class WashAttendantController {
     public ResponseEntity<List<WashAttendant>> getByServiceType(@RequestParam String name) {
         return new ResponseEntity<>(washAttendantService.getByServiceTypeName(name), HttpStatus.OK);
     }
+
+    @PutMapping("/{washAttendantId}/service-types/{serviceTypeId}")
+    public ResponseEntity<String> addServiceType(@PathVariable UUID washAttendantId, @PathVariable UUID serviceTypeId) {
+        String message = washAttendantService.addServiceType(washAttendantId, serviceTypeId);
+        if (message.equals("Service type added to the wash attendant")) {
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (message.equals("The wash attendant already has that service type")) {
+            return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+        } else {
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PatchMapping("/{washAttendantId}/wash-bay")
+    public ResponseEntity<String> changeWashBay(@PathVariable UUID washAttendantId, @RequestParam int bayNumber) {
+        String message = washAttendantService.changeWashBay(washAttendantId, bayNumber);
+        if (message.equals("Wash bay changed successfully")) {
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (message.equals("That wash bay is taken by another wash attendant")) {
+            return new ResponseEntity<>(message, HttpStatus.CONFLICT);
+        } else {
+            return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        }
+    }
 }

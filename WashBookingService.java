@@ -17,6 +17,15 @@ public class WashBookingService {
     private WashBookingRepository washBookingRepository;
 
     public String save(WashBooking washBooking) {
+        if (washBooking.getBookingDate().isBefore(LocalDate.now())) {
+            return "Wash booking date cannot be in the past";
+        }
+        boolean taken = washBookingRepository.existsByWashAttendantIdAndBookingDateAndStatusNot(
+                washBooking.getWashAttendant().getId(), washBooking.getBookingDate(), WashStatus.CANCELLED);
+        if (taken) {
+            return "Wash attendant is already booked on that date";
+        }
+        washBooking.setStatus(WashStatus.BOOKED);
         washBookingRepository.save(washBooking);
         return "Wash booking saved successfully";
     }
@@ -58,5 +67,26 @@ public class WashBookingService {
 
     public List<WashBooking> getBetween(LocalDate start, LocalDate end) {
         return washBookingRepository.findByBookingDateBetweenOrderByBookingDateAsc(start, end);
+    }
+
+    public String updateStatus(UUID id, WashStatus newStatus) {
+        Optional<WashBooking> existing = washBookingRepository.findById(id);
+        if (existing.isEmpty()) {
+            return "The wash booking with that id does not exist";
+        }
+        WashBooking found = existing.get();
+        WashStatus current = found.getStatus();
+        boolean allowed = false;
+        if (current == WashStatus.BOOKED && (newStatus == WashStatus.IN_PROGRESS || newStatus == WashStatus.CANCELLED)) {
+            allowed = true;
+        } else if (current == WashStatus.IN_PROGRESS && (newStatus == WashStatus.WASHED || newStatus == WashStatus.CANCELLED)) {
+            allowed = true;
+        }
+        if (!allowed) {
+            return "Cannot change status from " + current + " to " + newStatus;
+        }
+        found.setStatus(newStatus);
+        washBookingRepository.save(found);
+        return "Wash booking status updated successfully";
     }
 }

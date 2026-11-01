@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import rw.auca.carwash.model.WashAttendant;
+import rw.auca.carwash.model.WashBay;
 
 @Repository
 public interface WashAttendantRepository extends JpaRepository<WashAttendant, UUID> {
 
     @Query("SELECT DISTINCT w FROM WashAttendant w JOIN w.serviceTypes s WHERE LOWER(s.name) LIKE LOWER(CONCAT('%', :name, '%'))")
     List<WashAttendant> findWashAttendantsByServiceTypeName(@Param("name") String name);
+
+    boolean existsByWashBay(WashBay washBay);
 }

@@ -14,4 +14,6 @@ public interface WashBookingRepository extends JpaRepository<WashBooking, UUID> 
     List<WashBooking> findByStatusOrderByBookingDateAsc(WashStatus status);
 
     List<WashBooking> findByBookingDateBetweenOrderByBookingDateAsc(LocalDate start, LocalDate end);
+
+    boolean existsByWashAttendantIdAndBookingDateAndStatusNot(UUID washAttendantId, LocalDate bookingDate, WashStatus status);
 }
