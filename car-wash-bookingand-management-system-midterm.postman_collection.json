@@ -1,0 +1,2033 @@
+{
+  "info": {
+    "_postman_id": "5bc88c1b-f36b-489b-8db2-caac2a201f92",
+    "name": "car-wash-bookingand-management-system-midterm",
+    "description": "Postman collection of the Car Wash Booking and Management System backend. One request per requirement, named by its ID. Start the API on http://localhost:8080 first. Collection variables hold the ids of the seed data; change them in the Variables tab if your database has other ids.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const d = new Date();",
+          "d.setDate(d.getDate() + 200 + Math.floor(Math.random() * 500));",
+          "pm.collectionVariables.set('futureDate', d.toISOString().slice(0, 10));"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "A2",
+      "item": [
+        {
+          "name": "A2 service type",
+          "item": [
+            {
+              "name": "A2 service type - save",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/service-types/save",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "service-types",
+                    "save"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"name\": \"A2 Test Service\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Run the five requests of this folder in order (use Run folder or send them one by one)."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Service type saved successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 service type - get all",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/service-types/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "service-types",
+                    "all"
+                  ]
+                },
+                "description": "Also stores the id of the test record in the collection variable a2ServiceTypeId."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "const list = pm.response.json();",
+                      "const found = list.filter(function (x) { return x.name === 'A2 Test Service'; }).pop();",
+                      "pm.test('The record saved by A2 is in the list', function () { pm.expect(found).to.not.be.undefined; });",
+                      "if (found) { pm.collectionVariables.set('a2ServiceTypeId', found.id); }"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 service type - get by id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/service-types/{{a2ServiceTypeId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "service-types",
+                    "{{a2ServiceTypeId}}"
+                  ]
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Returned the right record', function () { pm.expect(pm.response.json().id).to.eql(pm.collectionVariables.get('a2ServiceTypeId')); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 service type - update",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/service-types/update/{{a2ServiceTypeId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "service-types",
+                    "update",
+                    "{{a2ServiceTypeId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"name\": \"A2 Test Service Updated\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Service type updated successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 service type - delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/service-types/delete/{{a2ServiceTypeId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "service-types",
+                    "delete",
+                    "{{a2ServiceTypeId}}"
+                  ]
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Service type deleted successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "A2 wash bay",
+          "item": [
+            {
+              "name": "A2 wash bay - save",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-bays/save",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-bays",
+                    "save"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"bayNumber\": 99, \"name\": \"A2 Test Bay\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Run the five requests of this folder in order (use Run folder or send them one by one)."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Wash bay saved successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 wash bay - get all",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-bays/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-bays",
+                    "all"
+                  ]
+                },
+                "description": "Also stores the id of the test record in the collection variable a2WashBayId."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "const list = pm.response.json();",
+                      "const found = list.filter(function (x) { return x.name === 'A2 Test Bay'; }).pop();",
+                      "pm.test('The record saved by A2 is in the list', function () { pm.expect(found).to.not.be.undefined; });",
+                      "if (found) { pm.collectionVariables.set('a2WashBayId', found.id); }"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 wash bay - get by id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-bays/{{a2WashBayId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-bays",
+                    "{{a2WashBayId}}"
+                  ]
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Returned the right record', function () { pm.expect(pm.response.json().id).to.eql(pm.collectionVariables.get('a2WashBayId')); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 wash bay - update",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-bays/update/{{a2WashBayId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-bays",
+                    "update",
+                    "{{a2WashBayId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"bayNumber\": 98, \"name\": \"A2 Test Bay Updated\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Wash bay updated successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 wash bay - delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-bays/delete/{{a2WashBayId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-bays",
+                    "delete",
+                    "{{a2WashBayId}}"
+                  ]
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Wash bay deleted successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "A2 customer",
+          "item": [
+            {
+              "name": "A2 customer - save",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/customers/save",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "customers",
+                    "save"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"firstName\": \"A2\", \"lastName\": \"Tester\", \"plateNumber\": \"A2 TEST 001\", \"phone\": \"0788000099\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Run the five requests of this folder in order (use Run folder or send them one by one)."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Customer saved successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 customer - get all",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/customers/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "customers",
+                    "all"
+                  ]
+                },
+                "description": "Also stores the id of the test record in the collection variable a2CustomerId."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "const list = pm.response.json();",
+                      "const found = list.filter(function (x) { return x.plateNumber === 'A2 TEST 001'; }).pop();",
+                      "pm.test('The record saved by A2 is in the list', function () { pm.expect(found).to.not.be.undefined; });",
+                      "if (found) { pm.collectionVariables.set('a2CustomerId', found.id); }"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 customer - get by id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/customers/{{a2CustomerId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "customers",
+                    "{{a2CustomerId}}"
+                  ]
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Returned the right record', function () { pm.expect(pm.response.json().id).to.eql(pm.collectionVariables.get('a2CustomerId')); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 customer - update",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/customers/update/{{a2CustomerId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "customers",
+                    "update",
+                    "{{a2CustomerId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"firstName\": \"A2\", \"lastName\": \"Tester Updated\", \"plateNumber\": \"A2 TEST 001\", \"phone\": \"0788000098\"}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Customer updated successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 customer - delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/customers/delete/{{a2CustomerId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "customers",
+                    "delete",
+                    "{{a2CustomerId}}"
+                  ]
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Customer deleted successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "A2 wash attendant",
+          "item": [
+            {
+              "name": "A2 wash attendant - save",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-attendants/save",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-attendants",
+                    "save"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"firstName\": \"A2\", \"lastName\": \"Attendant\", \"phone\": \"0788000097\", \"serviceTypes\": [{\"id\": \"{{svcBasicId}}\"}]}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Run the five requests of this folder in order (use Run folder or send them one by one)."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Wash attendant saved successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 wash attendant - get all",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-attendants/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-attendants",
+                    "all"
+                  ]
+                },
+                "description": "Also stores the id of the test record in the collection variable a2WashAttendantId."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "const list = pm.response.json();",
+                      "const found = list.filter(function (x) { return x.firstName === 'A2' && x.lastName === 'Attendant'; }).pop();",
+                      "pm.test('The record saved by A2 is in the list', function () { pm.expect(found).to.not.be.undefined; });",
+                      "if (found) { pm.collectionVariables.set('a2WashAttendantId', found.id); }"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 wash attendant - get by id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-attendants/{{a2WashAttendantId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-attendants",
+                    "{{a2WashAttendantId}}"
+                  ]
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Returned the right record', function () { pm.expect(pm.response.json().id).to.eql(pm.collectionVariables.get('a2WashAttendantId')); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 wash attendant - update",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-attendants/update/{{a2WashAttendantId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-attendants",
+                    "update",
+                    "{{a2WashAttendantId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"firstName\": \"A2\", \"lastName\": \"Attendant\", \"phone\": \"0788000096\", \"serviceTypes\": [{\"id\": \"{{svcBasicId}}\"}, {\"id\": \"{{svcFullId}}\"}]}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Wash attendant updated successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 wash attendant - delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-attendants/delete/{{a2WashAttendantId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-attendants",
+                    "delete",
+                    "{{a2WashAttendantId}}"
+                  ]
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Wash attendant deleted successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "A2 wash booking",
+          "item": [
+            {
+              "name": "A2 wash booking - save",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-bookings/save",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-bookings",
+                    "save"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"bookingDate\": \"{{futureDate}}\", \"status\": \"BOOKED\", \"timeSlot\": \"08:00-09:00\", \"vehicleModel\": \"A2 Test Car\", \"customer\": {\"id\": \"{{custKevinId}}\"}, \"washAttendant\": {\"id\": \"{{attGraceId}}\"}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "description": "Run the five requests of this folder in order (use Run folder or send them one by one)."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Wash booking saved successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 wash booking - get all",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-bookings/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-bookings",
+                    "all"
+                  ]
+                },
+                "description": "Also stores the id of the test record in the collection variable a2WashBookingId."
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "const list = pm.response.json();",
+                      "const found = list.filter(function (x) { return x.vehicleModel === 'A2 Test Car'; }).pop();",
+                      "pm.test('The record saved by A2 is in the list', function () { pm.expect(found).to.not.be.undefined; });",
+                      "if (found) { pm.collectionVariables.set('a2WashBookingId', found.id); }"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 wash booking - get by id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-bookings/{{a2WashBookingId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-bookings",
+                    "{{a2WashBookingId}}"
+                  ]
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Returned the right record', function () { pm.expect(pm.response.json().id).to.eql(pm.collectionVariables.get('a2WashBookingId')); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 wash booking - update",
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-bookings/update/{{a2WashBookingId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-bookings",
+                    "update",
+                    "{{a2WashBookingId}}"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"bookingDate\": \"{{futureDate}}\", \"timeSlot\": \"10:00-11:00\", \"vehicleModel\": \"A2 Test Car\", \"customer\": {\"id\": \"{{custKevinId}}\"}, \"washAttendant\": {\"id\": \"{{attGraceId}}\"}}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Wash booking updated successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "A2 wash booking - delete",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/wash-bookings/delete/{{a2WashBookingId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "wash-bookings",
+                    "delete",
+                    "{{a2WashBookingId}}"
+                  ]
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+                      "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Wash booking deleted successfully\"); });"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "description": "CRUD for the five entities (5 requests each). Every folder saves a test record, finds its id, reads it, updates it and deletes it, so the seed data is not touched."
+    },
+    {
+      "name": "B1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/customers/by-last-name?lastName=isaro",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "customers",
+            "by-last-name"
+          ],
+          "query": [
+            {
+              "key": "lastName",
+              "value": "isaro"
+            }
+          ]
+        },
+        "description": "DERIVED: findByLastNameIgnoreCaseOrderByFirstNameAsc. Try lastName=ISARO (same result) and lastName=zzz (empty list)."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "",
+              "const body = pm.response.json();",
+              "pm.test('Every customer has lastName Isaro (any letter case)', function () {",
+              "    pm.expect(body.every(function (c) { return c.lastName.toLowerCase() === 'isaro'; })).to.be.true;",
+              "});",
+              "pm.test('Sorted by firstName A to Z', function () {",
+              "    const names = body.map(function (c) { return c.firstName; });",
+              "    pm.expect(names).to.eql(names.slice().sort());",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "B2",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/wash-bookings/by-status?status=BOOKED",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "wash-bookings",
+            "by-status"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "BOOKED"
+            }
+          ]
+        },
+        "description": "DERIVED: findByStatusOrderByBookingDateAsc. Error case: status=PIZZA gives 400."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "",
+              "const body = pm.response.json();",
+              "pm.test('All wash bookings are BOOKED', function () {",
+              "    pm.expect(body.every(function (b) { return b.status === 'BOOKED'; })).to.be.true;",
+              "});",
+              "pm.test('Earliest bookingDate first', function () {",
+              "    const dates = body.map(function (b) { return b.bookingDate; });",
+              "    pm.expect(dates).to.eql(dates.slice().sort());",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "B3",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/wash-bookings/between?start=2026-10-01&end=2026-10-31",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "wash-bookings",
+            "between"
+          ],
+          "query": [
+            {
+              "key": "start",
+              "value": "2026-10-01"
+            },
+            {
+              "key": "end",
+              "value": "2026-10-31"
+            }
+          ]
+        },
+        "description": "DERIVED: findByBookingDateBetweenOrderByBookingDateAsc. Both dates are inclusive."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "",
+              "const body = pm.response.json();",
+              "pm.test('All dates are inside the range (inclusive)', function () {",
+              "    pm.expect(body.every(function (b) { return b.bookingDate >= '2026-10-01' && b.bookingDate <= '2026-10-31'; })).to.be.true;",
+              "});",
+              "pm.test('Ordered by bookingDate', function () {",
+              "    const dates = body.map(function (b) { return b.bookingDate; });",
+              "    pm.expect(dates).to.eql(dates.slice().sort());",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "C1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/wash-attendants/by-service-type?name=full",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "wash-attendants",
+            "by-service-type"
+          ],
+          "query": [
+            {
+              "key": "name",
+              "value": "full"
+            }
+          ]
+        },
+        "description": "JPQL with JOIN on the serviceTypes collection and LOWER. Try name=FULL, name=interior, name=engine (empty list)."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('At least one wash attendant', function () { pm.expect(pm.response.json().length).to.be.above(0); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "C2",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/wash-bays/free",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "wash-bays",
+            "free"
+          ]
+        },
+        "description": "JPQL with NOT EXISTS. With the seed data it returns Bay Four."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Returns a list', function () { pm.expect(pm.response.json()).to.be.an('array'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "C3",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/service-types/unused",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "service-types",
+            "unused"
+          ]
+        },
+        "description": "JPQL with IS EMPTY. With the seed data it returns Engine Wash."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "",
+              "pm.test('Engine Wash is held by nobody', function () {",
+              "    pm.expect(pm.response.json().map(function (s) { return s.name; })).to.include('Engine Wash');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "C4",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/customers/of-wash-attendant/{{attEricId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "customers",
+            "of-wash-attendant",
+            "{{attEricId}}"
+          ]
+        },
+        "description": "JPQL with DISTINCT and path navigation. Error case: use the id 00000000-0000-0000-0000-000000000000 for 404."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Customers are listed once', function () { const ids = pm.response.json().map(function (c) { return c.id; }); pm.expect(new Set(ids).size).to.eql(ids.length); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "D1",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/wash-bookings/save",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "wash-bookings",
+            "save"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"bookingDate\": \"{{futureDate}}\", \"status\": \"WASHED\", \"timeSlot\": \"08:00-09:00\", \"vehicleModel\": \"Postman Test Car\", \"customer\": {\"id\": \"{{custOlaId}}\"}, \"washAttendant\": {\"id\": \"{{attGraceId}}\"}}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "The body says WASHED but the booking is saved as BOOKED. A new random future date is used on every send. Error cases are in the extra demo collection (400 past date, 409 same attendant and date)."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Wash booking saved successfully\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "D2",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/wash-bookings/{{d2BookingId}}/status?status={{d2Status}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "wash-bookings",
+            "{{d2BookingId}}",
+            "status"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "{{d2Status}}"
+            }
+          ]
+        },
+        "description": "Picks a BOOKED or IN_PROGRESS booking (the one created by D1 first) and moves it one step forward. Send D1 first so that no seed booking is changed."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const base = pm.collectionVariables.get('baseUrl');",
+              "const FAKE_ID = '00000000-0000-0000-0000-000000000000';",
+              "function api(method, path, body, cb) {",
+              "    const request = { url: base + path, method: method, header: { 'Content-Type': 'application/json' } };",
+              "    if (body) { request.body = { mode: 'raw', raw: JSON.stringify(body) }; }",
+              "    pm.sendRequest(request, function (err, res) {",
+              "        let data = null;",
+              "        if (!err && res) {",
+              "            try { data = res.json(); } catch (e) { data = res.text(); }",
+              "        }",
+              "        cb(data, res);",
+              "    });",
+              "}",
+              "function asList(x) { return Array.isArray(x) ? x : []; }",
+              "",
+              "api('GET', '/api/wash-bookings/all', null, function (bookings) {",
+              "    const open = asList(bookings).filter(function (b) { return b.status === 'BOOKED' || b.status === 'IN_PROGRESS'; });",
+              "    const mine = open.filter(function (b) { return b.vehicleModel === 'Postman Test Car'; });",
+              "    const pick = (mine.length ? mine : open)[0];",
+              "    pm.collectionVariables.set('d2BookingId', pick ? pick.id : FAKE_ID);",
+              "    pm.collectionVariables.set('d2Status', pick && pick.status === 'IN_PROGRESS' ? 'WASHED' : 'IN_PROGRESS');",
+              "});"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Wash booking status updated successfully\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "D3",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/wash-attendants/{{attPatrickId}}/service-types/{{svcBasicId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "wash-attendants",
+            "{{attPatrickId}}",
+            "service-types",
+            "{{svcBasicId}}"
+          ]
+        },
+        "description": "The pre-request script first puts Patrick back to Interior Cleaning only, so this request succeeds every time. Check with GET /api/wash-attendants/{id}."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const base = pm.collectionVariables.get('baseUrl');",
+              "const FAKE_ID = '00000000-0000-0000-0000-000000000000';",
+              "function api(method, path, body, cb) {",
+              "    const request = { url: base + path, method: method, header: { 'Content-Type': 'application/json' } };",
+              "    if (body) { request.body = { mode: 'raw', raw: JSON.stringify(body) }; }",
+              "    pm.sendRequest(request, function (err, res) {",
+              "        let data = null;",
+              "        if (!err && res) {",
+              "            try { data = res.json(); } catch (e) { data = res.text(); }",
+              "        }",
+              "        cb(data, res);",
+              "    });",
+              "}",
+              "function asList(x) { return Array.isArray(x) ? x : []; }",
+              "",
+              "const reset = {",
+              "    firstName: 'Patrick', lastName: 'Niyonzima', phone: '0788000003',",
+              "    washBay: { id: pm.collectionVariables.get('bay3Id') },",
+              "    serviceTypes: [{ id: pm.collectionVariables.get('svcInteriorId') }]",
+              "};",
+              "api('PUT', '/api/wash-attendants/update/' + pm.collectionVariables.get('attPatrickId'), reset, function () {});"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Service type added to the wash attendant\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "D4",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/wash-attendants/{{attPatrickId}}/wash-bay?bayNumber=4",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "wash-attendants",
+            "{{attPatrickId}}",
+            "wash-bay"
+          ],
+          "query": [
+            {
+              "key": "bayNumber",
+              "value": "4"
+            }
+          ]
+        },
+        "description": "The pre-request script first moves Patrick back to bay 3. Then Patrick moves to bay 4 and bay 3 becomes free (check with C2). Use the extra demo collection to move him back."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const base = pm.collectionVariables.get('baseUrl');",
+              "const FAKE_ID = '00000000-0000-0000-0000-000000000000';",
+              "function api(method, path, body, cb) {",
+              "    const request = { url: base + path, method: method, header: { 'Content-Type': 'application/json' } };",
+              "    if (body) { request.body = { mode: 'raw', raw: JSON.stringify(body) }; }",
+              "    pm.sendRequest(request, function (err, res) {",
+              "        let data = null;",
+              "        if (!err && res) {",
+              "            try { data = res.json(); } catch (e) { data = res.text(); }",
+              "        }",
+              "        cb(data, res);",
+              "    });",
+              "}",
+              "function asList(x) { return Array.isArray(x) ? x : []; }",
+              "",
+              "api('PATCH', '/api/wash-attendants/' + pm.collectionVariables.get('attPatrickId') + '/wash-bay?bayNumber=3', null, function () {});"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Wash bay changed successfully\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "E1",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/payments/save?washBookingId={{washedBookingId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "payments",
+            "save"
+          ],
+          "query": [
+            {
+              "key": "washBookingId",
+              "value": "{{washedBookingId}}"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"method\": \"Mobile Money\", \"reference\": \"MoMo TXN {{$randomInt}}\", \"amount\": 8000}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "The pre-request script finds a WASHED wash booking. Each send creates one more payment."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const base = pm.collectionVariables.get('baseUrl');",
+              "const FAKE_ID = '00000000-0000-0000-0000-000000000000';",
+              "function api(method, path, body, cb) {",
+              "    const request = { url: base + path, method: method, header: { 'Content-Type': 'application/json' } };",
+              "    if (body) { request.body = { mode: 'raw', raw: JSON.stringify(body) }; }",
+              "    pm.sendRequest(request, function (err, res) {",
+              "        let data = null;",
+              "        if (!err && res) {",
+              "            try { data = res.json(); } catch (e) { data = res.text(); }",
+              "        }",
+              "        cb(data, res);",
+              "    });",
+              "}",
+              "function asList(x) { return Array.isArray(x) ? x : []; }",
+              "",
+              "api('GET', '/api/wash-bookings/all', null, function (bookings) {",
+              "    const washed = asList(bookings).filter(function (b) { return b.status === 'WASHED'; });",
+              "    const pick = washed.find(function (b) { return b.bookingDate === '2026-10-05'; }) || washed[0];",
+              "    pm.collectionVariables.set('washedBookingId', pick ? pick.id : FAKE_ID);",
+              "});"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 201', function () { pm.response.to.have.status(201); });",
+              "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Payment saved successfully\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "E2",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/payments/customer/{{plateEncoded}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "payments",
+            "customer",
+            "{{plateEncoded}}"
+          ]
+        },
+        "description": "JPQL path navigation p.washBooking.customer.plateNumber. The plate number of the customer Ola Isaro is found by the pre-request script. Try a customer without payments for an empty list."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const base = pm.collectionVariables.get('baseUrl');",
+              "const FAKE_ID = '00000000-0000-0000-0000-000000000000';",
+              "function api(method, path, body, cb) {",
+              "    const request = { url: base + path, method: method, header: { 'Content-Type': 'application/json' } };",
+              "    if (body) { request.body = { mode: 'raw', raw: JSON.stringify(body) }; }",
+              "    pm.sendRequest(request, function (err, res) {",
+              "        let data = null;",
+              "        if (!err && res) {",
+              "            try { data = res.json(); } catch (e) { data = res.text(); }",
+              "        }",
+              "        cb(data, res);",
+              "    });",
+              "}",
+              "function asList(x) { return Array.isArray(x) ? x : []; }",
+              "",
+              "api('GET', '/api/customers/by-last-name?lastName=isaro', null, function (customers) {",
+              "    const list = asList(customers);",
+              "    const ola = list.find(function (c) { return c.firstName === 'Ola'; }) || list[0];",
+              "    pm.collectionVariables.set('plateEncoded', ola ? encodeURIComponent(ola.plateNumber) : 'UNKNOWN');",
+              "});"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "",
+              "pm.test('Newest paidDate first', function () {",
+              "    const dates = pm.response.json().map(function (p) { return p.paidDate; });",
+              "    pm.expect(dates).to.eql(dates.slice().sort().reverse());",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "E3",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/payments/delete/{{tempPaymentId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "payments",
+            "delete",
+            "{{tempPaymentId}}"
+          ]
+        },
+        "description": "The pre-request script creates a temporary payment, then this request deletes it. Error cases (404 payment, 409 booking with payments, 200 booking without payments) are in the extra demo collection."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const base = pm.collectionVariables.get('baseUrl');",
+              "const FAKE_ID = '00000000-0000-0000-0000-000000000000';",
+              "function api(method, path, body, cb) {",
+              "    const request = { url: base + path, method: method, header: { 'Content-Type': 'application/json' } };",
+              "    if (body) { request.body = { mode: 'raw', raw: JSON.stringify(body) }; }",
+              "    pm.sendRequest(request, function (err, res) {",
+              "        let data = null;",
+              "        if (!err && res) {",
+              "            try { data = res.json(); } catch (e) { data = res.text(); }",
+              "        }",
+              "        cb(data, res);",
+              "    });",
+              "}",
+              "function asList(x) { return Array.isArray(x) ? x : []; }",
+              "",
+              "api('GET', '/api/wash-bookings/all', null, function (bookings) {",
+              "    const washed = asList(bookings).filter(function (b) { return b.status === 'WASHED'; });",
+              "    const pick = washed.find(function (b) { return b.bookingDate === '2026-10-05'; }) || washed[0];",
+              "    if (!pick) { pm.collectionVariables.set('tempPaymentId', FAKE_ID); return; }",
+              "    const plate = encodeURIComponent(pick.customer.plateNumber);",
+              "    const ref = 'TEMP DELETE ' + Date.now();",
+              "    api('POST', '/api/payments/save?washBookingId=' + pick.id, { method: 'Cash', reference: ref, amount: 1000 }, function () {",
+              "        api('GET', '/api/payments/customer/' + plate, null, function (payments) {",
+              "            const tmp = asList(payments).find(function (p) { return p.reference === ref; });",
+              "            pm.collectionVariables.set('tempPaymentId', tmp ? tmp.id : FAKE_ID);",
+              "        });",
+              "    });",
+              "});"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Message is correct', function () { pm.expect(pm.response.text()).to.eql(\"Payment deleted successfully\"); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "F1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/wash-bookings/stats/by-status",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "wash-bookings",
+            "stats",
+            "by-status"
+          ]
+        },
+        "description": "JPQL GROUP BY and COUNT, returned as List<Object[]>."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "",
+              "pm.test('One row [status, count] per status', function () {",
+              "    const rows = pm.response.json();",
+              "    pm.expect(rows).to.be.an('array');",
+              "    pm.expect(rows.every(function (r) { return r.length === 2; })).to.be.true;",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "F2",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/wash-bookings/cancel-day?washAttendantId={{attEricId}}&date={{futureDate}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "wash-bookings",
+            "cancel-day"
+          ],
+          "query": [
+            {
+              "key": "washAttendantId",
+              "value": "{{attEricId}}"
+            },
+            {
+              "key": "date",
+              "value": "{{futureDate}}"
+            }
+          ]
+        },
+        "description": "The pre-request script creates a booking for Eric on a future date, then this request cancels that day (1 wash bookings cancelled). The seed data is not touched. Failing case: date=2026-10-05 gives 0 because that booking is WASHED (extra demo collection)."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const base = pm.collectionVariables.get('baseUrl');",
+              "const FAKE_ID = '00000000-0000-0000-0000-000000000000';",
+              "function api(method, path, body, cb) {",
+              "    const request = { url: base + path, method: method, header: { 'Content-Type': 'application/json' } };",
+              "    if (body) { request.body = { mode: 'raw', raw: JSON.stringify(body) }; }",
+              "    pm.sendRequest(request, function (err, res) {",
+              "        let data = null;",
+              "        if (!err && res) {",
+              "            try { data = res.json(); } catch (e) { data = res.text(); }",
+              "        }",
+              "        cb(data, res);",
+              "    });",
+              "}",
+              "function asList(x) { return Array.isArray(x) ? x : []; }",
+              "",
+              "const booking = {",
+              "    bookingDate: pm.collectionVariables.get('futureDate'), status: 'BOOKED', timeSlot: '16:00-17:00',",
+              "    vehicleModel: 'Postman F2 Car',",
+              "    customer: { id: pm.collectionVariables.get('custKevinId') },",
+              "    washAttendant: { id: pm.collectionVariables.get('attEricId') }",
+              "};",
+              "api('POST', '/api/wash-bookings/save', booking, function () {});"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Message gives the real number', function () { pm.expect(pm.response.text()).to.match(/^\\d+ wash bookings cancelled$/); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bonus +5 dashboard",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/dashboard/summary",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "dashboard",
+            "summary"
+          ]
+        },
+        "description": "Bonus: DashboardService builds a LinkedHashMap<String, Long>."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "",
+              "pm.test('Has the six counters', function () {",
+              "    const o = pm.response.json();",
+              "    pm.expect(Object.keys(o)).to.eql(['customers', 'washAttendants', 'freeWashBays', 'bookingsToday', 'booked', 'payments']);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bonus +5 page",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/wash-bookings/page?page=0&size=5&sort=bookingDate,desc",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "wash-bookings",
+            "page"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "0"
+            },
+            {
+              "key": "size",
+              "value": "5"
+            },
+            {
+              "key": "sort",
+              "value": "bookingDate,desc"
+            }
+          ]
+        },
+        "description": "Bonus: Pageable built in the controller from page, size and sort."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', function () { pm.response.to.have.status(200); });",
+              "",
+              "const o = pm.response.json();",
+              "pm.test('Shows total pages and total elements', function () {",
+              "    pm.expect(o).to.have.property('totalPages');",
+              "    pm.expect(o).to.have.property('totalElements');",
+              "});",
+              "pm.test('At most 5 wash bookings, newest first', function () {",
+              "    pm.expect(o.content.length).to.be.at.most(5);",
+              "    const dates = o.content.map(function (b) { return b.bookingDate; });",
+              "    pm.expect(dates).to.eql(dates.slice().sort().reverse());",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "futureDate",
+      "value": "2027-06-15",
+      "type": "string"
+    },
+    {
+      "key": "custOlaId",
+      "value": "b1133e26-b9d8-4886-92a5-2519a892e494",
+      "type": "string"
+    },
+    {
+      "key": "custAlineId",
+      "value": "cacfe801-98b2-41eb-a49b-4dfa641720d0",
+      "type": "string"
+    },
+    {
+      "key": "custEricId",
+      "value": "b5093391-d977-4a32-8b9b-afe79c777134",
+      "type": "string"
+    },
+    {
+      "key": "custDianeId",
+      "value": "aed7fdf5-d68b-4222-9b99-84ef19aeda2f",
+      "type": "string"
+    },
+    {
+      "key": "custKevinId",
+      "value": "d7adfb7a-746f-42c3-a4a9-bd66c580b0b6",
+      "type": "string"
+    },
+    {
+      "key": "svcBasicId",
+      "value": "dcb5aeda-1c4b-486a-9b1a-909e3dfab25b",
+      "type": "string"
+    },
+    {
+      "key": "svcEngineId",
+      "value": "ab211a10-2fb0-455a-8242-20ff43044295",
+      "type": "string"
+    },
+    {
+      "key": "svcFullId",
+      "value": "ef4cb73d-4479-495a-b242-bb45c0d58218",
+      "type": "string"
+    },
+    {
+      "key": "svcInteriorId",
+      "value": "f6dcdccd-dba1-4779-a23d-fb1ec026cfe1",
+      "type": "string"
+    },
+    {
+      "key": "bay1Id",
+      "value": "00b60cfd-db0c-4440-95e9-e0390789ecfe",
+      "type": "string"
+    },
+    {
+      "key": "bay2Id",
+      "value": "1edd9488-2cff-41f2-8719-480b1bde803f",
+      "type": "string"
+    },
+    {
+      "key": "bay3Id",
+      "value": "6ad76d1d-2ed7-48aa-a111-5b9385405426",
+      "type": "string"
+    },
+    {
+      "key": "bay4Id",
+      "value": "2ec026f7-bd91-4c9f-a839-a3e1799f7e22",
+      "type": "string"
+    },
+    {
+      "key": "attEricId",
+      "value": "53e6ea5c-5594-4c3f-9559-ccbc7bfa85c1",
+      "type": "string"
+    },
+    {
+      "key": "attGraceId",
+      "value": "822e648e-d9a0-46b2-9ce6-e40670ab1ba4",
+      "type": "string"
+    },
+    {
+      "key": "attPatrickId",
+      "value": "c4e5d663-008d-423d-bd3b-8d171c4daa39",
+      "type": "string"
+    }
+  ]
+}
